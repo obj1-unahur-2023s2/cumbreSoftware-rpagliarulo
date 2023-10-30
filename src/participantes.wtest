@@ -1,0 +1,110 @@
+import paises.*
+import participantes.*
+import conocimientos.*
+import cumbre.*
+
+describe "Participantes de la cumbre" {
+	
+	const argentina= new Pais()
+	const brasil= new Pais()
+	
+	const juana= new Programador (pais= argentina, commits= 600, conocimientos= #{programacionBasica, css, html})
+	const lucia= new Programador (pais= brasil, commits= 800, conocimientos= #{programacionBasica, instalacionLinux, objetos, disenioConObjetos})
+	const mariana= new Especialista (pais= argentina, commits= 200, conocimientos= #{programacionBasica, instalacionLinux, objetos, disenioConObjetos})
+
+
+	method initialize() {
+	cumbre.registrarIngreso(juana)
+	cumbre.registrarIngreso(lucia)
+	cumbre.registrarIngreso(mariana)
+	}
+
+
+	test "Los países de los participantes son Argentina y Brasil" {
+
+		assert.equals(#{argentina, brasil},cumbre.paisesDeLosParticipantes())
+
+	}
+	
+	test "Hay 2 participantes de Argentina y 1 de Brasil" {
+
+		assert.equals(2, cumbre.cantidadDeParticipantesDe(argentina))
+		assert.equals(1, cumbre.cantidadDeParticipantesDe(brasil))
+
+	}
+	
+	test "Argentina es el país con más participantes" {
+
+		assert.equals(argentina, cumbre.paisConMasParticipantes())
+
+	}
+	
+	test "la cumbre es relevante (porque son las tres capas)" {
+
+		assert.that(cumbre.esRelevante())
+
+	}
+	
+}
+
+describe "Agregamos a Susana a la cumbre de participantes" {
+	
+		
+	const argentina= new Pais()
+	const brasil= new Pais()
+	const colombia= new Pais()
+	const coreaDelNorte= new Pais()
+	const coreaDelSur= new Pais()
+	
+	const juana= new Programador (pais= argentina, commits= 600, conocimientos= #{programacionBasica, css, html})
+	const lucia= new Programador (pais= brasil, commits= 800, conocimientos= #{programacionBasica, instalacionLinux, objetos, disenioConObjetos})
+	const mariana= new Especialista (pais= argentina, commits= 200, conocimientos= #{programacionBasica, instalacionLinux, objetos, disenioConObjetos})
+	const susana= new Especialista (pais= colombia, commits= 1500, conocimientos= #{programacionBasica, objetos})
+
+
+	method initialize() {
+	cumbre.registrarIngreso(juana)
+	cumbre.registrarIngreso(lucia)
+	cumbre.registrarIngreso(mariana)
+	cumbre.registrarIngreso(susana)
+	
+	cumbre.registrarAuspiciante(argentina)
+	cumbre.registrarAuspiciante(colombia)
+	cumbre.registrarAuspiciante(coreaDelNorte)
+	
+	coreaDelNorte.registrarConflicto(coreaDelSur)
+	coreaDelSur.registrarConflicto(coreaDelNorte)
+
+	}
+
+	test "ahora los países con participantes son Argentina, Brasil y Colombia" {
+
+		assert.equals(#{argentina, brasil, colombia},cumbre.paisesDeLosParticipantes())
+
+	}
+	
+	test "el país con más participantes sigue siendo Argentina" {
+
+		assert.equals(argentina, cumbre.paisConMasParticipantes())
+
+	}
+	
+	test "ahora la cumbre no es relevante (porque Susana no es capa)" {
+
+		assert.notThat(cumbre.esRelevante())
+
+	}
+	
+	test "Corea del Sur es conflictivo para la cumbre a partir del conflicto que tiene con Corea del Norte" {
+
+		assert.that(cumbre.esConflictivo(coreaDelSur))
+
+	}
+	
+	test "la única participante extranjera es Lucía, dado que Brasil no es auspiciante" {
+
+		assert.equals(#{lucia}, cumbre.participantesExtranjeros())
+
+	}
+	
+}
