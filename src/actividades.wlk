@@ -1,6 +1,6 @@
 
 class Actividad {
-	const tema
-	const horas
-
+	const property tema
+	const property horas
+	const property commitsPorHora
 }

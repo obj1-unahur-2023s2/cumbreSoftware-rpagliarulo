@@ -2,6 +2,7 @@ import paises.*
 import conocimientos.*
 import cumbre.*
 import empresas.*
+import actividades.*
 
 class Participante {
 	const property pais
@@ -14,12 +15,15 @@ class Participante {
 }
 
 class Programador inherits Participante {
-	var horasDeCapacitacion
+	var horasDeCapacitacion= 100
 		
 	override method esCape()= commits > 500
 	override method cumpleRequisitos()= super() && commits >= cumbre.commitsRequeridos()
-	override method consecuenciaActividad(unaActividad) {super() horasDeCapacitacion += unaActividad.horas()
+	override method consecuenciaActividad(unaActividad) {
+		super()
+		horasDeCapacitacion += unaActividad.horas() 
 	}
+	
 }
 
 class Especialista inherits Participante {
