@@ -19,9 +19,7 @@ class Programador inherits Participante {
 		
 	override method esCape()= commits > 500
 	override method cumpleRequisitos()= super() && commits >= cumbre.commitsRequeridos()
-	override method consecuenciaActividad(unaActividad) {
-		super()
-		horasDeCapacitacion += unaActividad.horas() 
+	override method consecuenciaActividad(unaActividad) {super(unaActividad) horasDeCapacitacion += unaActividad.horas() 
 	}
 	
 }
