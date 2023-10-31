@@ -1,24 +1,36 @@
 import paises.*
 import conocimientos.*
 import cumbre.*
+import empresas.*
 
 class Participante {
 	const property pais
 	const conocimientos= #{}
-	const commits
+	var commits
 
 	method esCape()
 	method cumpleRequisitos()= conocimientos.contains(programacionBasica)
+	method consecuenciaActividad(unaActividad){conocimientos.add(unaActividad.tema()) commits += unaActividad.horas() * unaActividad.commitsPorHora()}  
 }
 
 class Programador inherits Participante {
-	
+	var horasDeCapacitacion
+		
 	override method esCape()= commits > 500
-	override method cumpleRequisitos()= super() && commits >= cumbre.cantidadDeCommitsRequeridos()
+	override method cumpleRequisitos()= super() && commits >= cumbre.commitsRequeridos()
+	override method consecuenciaActividad(unaActividad) {super() horasDeCapacitacion += unaActividad.horas()
+	}
 }
 
 class Especialista inherits Participante {
 	
 	override method esCape()= conocimientos.size() > 2
-	override method cumpleRequisitos()= super() && commits >= cumbre.cantidadDeCommitsRequeridos() - 100 && conocimientos.contains(objetos)
+	override method cumpleRequisitos()= super() && commits >= cumbre.commitsRequeridos() - 100 && conocimientos.contains(objetos)
+}
+
+class Gerente inherits Participante {
+	const empresa
+	
+	override method esCape()= empresa.esMultinacional()
+	override method cumpleRequisitos()= super() && conocimientos.contains(manejoDeGrupos)
 }

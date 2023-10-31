@@ -1,12 +1,14 @@
 import paises.*
 import conocimientos.*
 import participantes.*
+import actividades.*
 
 
 object cumbre {
 	const paisesAuspiciantes= #{}
 	const participantes= #{}
-	var property cantidadDeCommitsRequeridos= 300
+	const actividadesRealizadas= new List()
+	var property commitsRequeridos= 300
 	
 	method esConflictivo(unPais)= paisesAuspiciantes.any({pais => pais.estaEnConflictoCon(unPais)})
 	method registrarIngreso(unaPersona) {participantes.add(unaPersona) }
@@ -21,5 +23,12 @@ object cumbre {
 	method puedeIngresar(unParticipante)= unParticipante.cumpleRequisitos() && !self.tieneRestringidoElAcceso(unParticipante)
 	method darIngreso(unParticipante) {if (self.puedeIngresar(unParticipante)) self.registrarIngreso(unParticipante) else self.error("El participante no puede ingresar")}
 	method esSegura()= participantes.all({participante => self.puedeIngresar(participante)})
+	method registarActividad(unaActividad) {actividadesRealizadas.add(unaActividad)}
+	method participoEnActividad(unaActividad, unaPersona)= unaPersona.conocimientos().contains(unaActividad.tema())
+	method consecuenciasParaParticipantes(actividad)= participantes.forEach({participante => if (self.participoEnActividad(actividad, participante)) participante.consecuenciaActividad(actividad)})
+	method totalDeHorasDeActividades()= actividadesRealizadas.map({actividad => actividad.horas()}).sum()
 }
+
+
+
 
